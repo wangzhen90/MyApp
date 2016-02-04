@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="list_footer_dividers_enabled">false</bool>
+    <bool name="list_header_dividers_enabled">false</bool>
+    <bool name="list_fast_scroll_enabled">false</bool>
+    <bool name="list_smooth_scrollbar">true</bool>
+</resources>

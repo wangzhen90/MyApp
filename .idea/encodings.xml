@@ -19,11 +19,23 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/canvasdemo2/PointBean.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/canvasdemo2/TestCourseReportActivity.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/et/ExpandableTextView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/CircleView.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/DotsView.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/Icon.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/IconType.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/LikeButton.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/LikeButtonActivity.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/OnLikeListener.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/widget/likebutton/Utils.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/musicview/AudioFxActivity.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/musicview/RoundImageView.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/widget/musicview/VisualizerView.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/anim" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/a.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/heart_off.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/heart_on.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_android_green_500_24dp.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_android_grey_500_24dp.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/popup_blue.9.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/popup_green.9.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/popup_red.9.png" charset="GBK" />
@@ -31,6 +43,10 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/seek_bg.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/seek_thumb.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/seekbar_horizontal.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/star_off.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/star_on.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/thumb_off.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/thumb_on.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_course_testcourse_report.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_el.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_music_view.xml" charset="GBK" />
@@ -38,6 +54,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/expandable_view.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/expandable_view_content.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/expandable_view_header.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/likeview.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/test_rect.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/raw" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />

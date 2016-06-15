@@ -9,4 +9,6 @@
     <string name="title_activity_cavas_demo">CavasDemoActivity</string>
     <string name="title_activity_chart">ChartActivity</string>
     <string name="title_activity_stream">StreamActivity</string>
+    <string name="title_activity_thread_pool">ThreadPoolActivity</string>
+    <string name="title_activity_okhttp">OKHttpActivity</string>
 </resources>

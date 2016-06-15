@@ -12,7 +12,7 @@ import android.widget.TextView;
  */
 public class LinkTouchMoveMethod extends LinkMovementMethod {
 
-    private UserSpan mPressedSpan;
+    private CommonClickSpan mPressedSpan;
 
     @Override
     public boolean onTouchEvent(TextView textView, Spannable spannable, MotionEvent event) {
@@ -24,7 +24,7 @@ public class LinkTouchMoveMethod extends LinkMovementMethod {
                         spannable.getSpanEnd(mPressedSpan));
             }
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            UserSpan touchedSpan = getPressedSpan(textView, spannable, event);
+            CommonClickSpan touchedSpan = getPressedSpan(textView, spannable, event);
             if (mPressedSpan != null && touchedSpan != mPressedSpan) {
                 mPressedSpan.setPressed(false);
                 mPressedSpan = null;
@@ -41,7 +41,7 @@ public class LinkTouchMoveMethod extends LinkMovementMethod {
         return true;
     }
 
-    UserSpan getPressedSpan(TextView textView, Spannable spannable, MotionEvent event) {
+    CommonClickSpan getPressedSpan(TextView textView, Spannable spannable, MotionEvent event) {
 
         int x = (int) event.getX();
         int y = (int) event.getY();
@@ -56,8 +56,8 @@ public class LinkTouchMoveMethod extends LinkMovementMethod {
         int line = layout.getLineForVertical(y);
         int off = layout.getOffsetForHorizontal(line, x);
 
-        UserSpan[] link = spannable.getSpans(off, off, UserSpan.class);
-        UserSpan touchedSpan = null;
+        CommonClickSpan[] link = spannable.getSpans(off, off, CommonClickSpan.class);
+        CommonClickSpan touchedSpan = null;
         if (link.length > 0) {
             touchedSpan = link[0];
         }

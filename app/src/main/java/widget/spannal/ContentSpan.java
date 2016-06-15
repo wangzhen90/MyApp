@@ -2,10 +2,8 @@ package widget.spannal;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 /**
  * Created by dell on 2015/12/25.
  */
-public class UserSpan extends CommonClickSpan {
+public class ContentSpan extends CommonClickSpan {
     Context mContext;
     TextView textView;
 
@@ -26,7 +24,7 @@ public class UserSpan extends CommonClickSpan {
     private int mPressedTextColor;
 
 
-    public UserSpan(String url,Context context,TextView textView) {
+    public ContentSpan(String url, Context context, TextView textView) {
       super();
 
         mContext = context;
@@ -37,9 +35,16 @@ public class UserSpan extends CommonClickSpan {
 
     @Override
     public void updateDrawState(TextPaint ds) {
-        ds.setColor(Color.BLUE);
+//        ds.setColor(Color.BLUE);
         ds.setUnderlineText(false);
-        ds.bgColor = mIsPressed ? mPressedBackgroundColor : Color.TRANSPARENT;
+//        ds.bgColor = mIsPressed ? mPressedBackgroundColor : Color.TRANSPARENT;
+        if(textView != null){
+            if(mIsPressed){
+                textView.setBackgroundColor(Color.BLACK);
+            }else {
+                textView.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
 
         Log.i("test","updateDrawState");
     }
@@ -47,7 +52,7 @@ public class UserSpan extends CommonClickSpan {
     @Override
     public void onClick(View widget) {
 //        textView.setHighlightColor(Color.GRAY);
-        Toast.makeText(mContext,"跳转到主页面",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,"content",Toast.LENGTH_SHORT).show();
 //        widget.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

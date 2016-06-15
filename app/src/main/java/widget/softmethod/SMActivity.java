@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -53,7 +54,7 @@ public class SMActivity extends Activity {
     private EditText etContent;
     private ImageView ivPic;
     RelativeLayout relPic;
-    InputMethodManager imm ;
+    InputMethodManager imm;
     private int SELECT_PICTURE = 1; // 从图库中选择图片
     private int SELECT_CAMER = 2; // 用相机拍摄照片
 
@@ -118,13 +119,6 @@ public class SMActivity extends Activity {
             }
         });
         bqView = findViewById(R.id.wpost_bqview);
-        if (SPUtils.getSoftMehthodHeight() > 100) {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bqView.getLayoutParams();
-            layoutParams.height = SPUtils.getSoftMehthodHeight();
-            bqView.setLayoutParams(layoutParams);
-
-        }
-
 
         bqView.setVisibility(View.GONE);
         lin = (LinearLayout) findViewById(R.id.wpos_layout);
@@ -134,25 +128,6 @@ public class SMActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-
-//				if (isKeyBoardShow && !isBQViewShow) {// 键盘隐藏，选择表情
-//					imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-//					setADJUST_PAN();
-//					isKeyBoardShow = false;
-//					isBQViewShow = true;
-//				} else
-//				if (isBQViewShow && !isKeyBoardShow) {// 键盘显示
-//					imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-//					setADJUST_RESIZE();
-//					isKeyBoardShow = true;
-//					isBQViewShow = false;
-//				} else
-//                if (!isBQViewShow && !isKeyBoardShow) {// 键盘隐藏，选择表情
-//                    setADJUST_PAN();
-//                    showBQView();
-//                    isKeyBoardShow = false;
-//                    isBQViewShow = true;
-//                }
                 //最开始的时候
                 if (!isBQViewShow && !isKeyBoardShow) {
                     setADJUST_RESIZE();
@@ -172,9 +147,9 @@ public class SMActivity extends Activity {
                         public void run() {
                             hideBQView();
                         }
-                    },100);
+                    }, 100);
 
-                }  else if (!isBQViewShow && isKeyBoardShow) {
+                } else if (!isBQViewShow && isKeyBoardShow) {
                     showBQView();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -187,56 +162,64 @@ public class SMActivity extends Activity {
                     isKeyBoardShow = false;
                     isBQViewShow = true;
                 }
+
+                if (SPUtils.getSoftMehthodHeight() < 200) {
+
+                    lin.getViewTreeObserver().addOnGlobalLayoutListener(
+                            new OnGlobalLayoutListener() {
+
+                                @Override
+                                public void onGlobalLayout() {
+
+                                    Rect rect = new Rect();
+                                    SMActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                                    //屏高
+                                    int screenHeight = SMActivity.this.getWindow().getDecorView().getRootView().getHeight();
+                                    //获取键盘的高度
+                                    int softMethodHeight = screenHeight - rect.bottom;
+                                    if (softMethodHeight > 100) {
+                                        SPUtils.saveSoftMethodHeight(softMethodHeight);
+                                        lin.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                    }
+                                }
+                            });
+                }
             }
         });
-        lin.getViewTreeObserver().addOnGlobalLayoutListener(
-                new OnGlobalLayoutListener() {
 
-                    @Override
-                    public void onGlobalLayout() {
+        if (SPUtils.getSoftMehthodHeight() < 200) {
 
-                        //获取当前界面的可是区域，不包含通知栏
-                        Rect rect = new Rect();
-                        SMActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-                        //屏高
-                        int screenHeight = SMActivity.this.getWindow().getDecorView().getRootView().getHeight();
-                        //获取键盘的高度
-                        int softMethodHeight = screenHeight - rect.bottom;
-                        if (softMethodHeight > 100) {
-                            SPUtils.saveSoftMethodHeight(softMethodHeight);
+            lin.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new OnGlobalLayoutListener() {
+
+                        @Override
+                        public void onGlobalLayout() {
+
+                            Rect rect = new Rect();
+                            SMActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                            //屏高
+                            int screenHeight = SMActivity.this.getWindow().getDecorView().getRootView().getHeight() - rect.top;
+                            //获取键盘的高度
+                            int softMethodHeight = screenHeight - rect.bottom;
+                            if (softMethodHeight > 100) {
+                                SPUtils.saveSoftMethodHeight(softMethodHeight);
+                                lin.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
                         }
+                    });
+        } else {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) bqView.getLayoutParams();
+            layoutParams.height = SPUtils.getSoftMehthodHeight();
+            bqView.setLayoutParams(layoutParams);
+        }
 
 
-//						int n = lin.getRootView().getHeight() - lin.getHeight();
-//                        if (softMethodHeight > 100) {// 软键盘已弹出
-//                            if (isBQViewShow) {
-//
-//                                setADJUST_RESIZE();
-////                                hideBQView();
-//                                ivBQ.setImageResource(R.drawable.face);
-//                                isBQViewShow = true;
-//                            }
-//                            isKeyBoardShow = true;
-//                        } else {// 软键盘未弹出
-//                            isKeyBoardShow = false;
-//                            if (isADJUST_PAN) {
-//                                setADJUST_RESIZE();
-//                            }
-//                        }
+    }
 
-//                        if (isKeyBoardShow && !isBQViewShow) {// 键盘隐藏，选择表情
-//                            hideBQView();
-//                        } else
-//                        if (isBQViewShow && !isKeyBoardShow) {// 键盘显示
-//                            showBQView();
-//                        }
-//                        else if (!isBQViewShow && !isKeyBoardShow) {// 键盘隐藏，选择表情
-//                            hideBQView();
-//                        }
-
-                    }
-                });
-
+    private int getStatusBarHeight(){
+        Rect rect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        return rect.top;
     }
 
     @Override

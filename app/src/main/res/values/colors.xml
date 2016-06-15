@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
 
     <color name="sliding_menu_item_down">#ff39393b</color>
     <color name="sliding_menu_item_release">#00000000</color>
@@ -115,6 +113,8 @@
     <color name="fake_shadow_end_color">#03000000</color>
 
     <!--dect end-->
-
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 
 </resources>

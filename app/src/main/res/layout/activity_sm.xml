@@ -94,7 +94,7 @@
     <View
         android:id="@+id/wpost_bqview"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="10dp"
         android:background="#f00"
         android:visibility="gone" />
 

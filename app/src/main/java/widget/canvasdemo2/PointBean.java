@@ -1,10 +1,7 @@
 package widget.canvasdemo2;
 
-/**
- * 三角形坐标点的Bean
- * @author DuGuang
- * blog地址：http://blog.csdn.net/duguang77
- */
+
+
 public class PointBean {
 	public double x;
 	public double y;

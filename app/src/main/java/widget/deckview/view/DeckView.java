@@ -102,62 +102,62 @@ public class DeckView<T> extends FrameLayout {
      */
     boolean synchronizeStackViewsWithModel() {
 //        Log.e("test","child,synchronizeStackViewsWithModel");
-        if (mStackViewsDirty) {
-            // Get all the task transforms
-            ArrayList<T> data = mCallback.getData();
-            float stackScroll = mStackScroller.getStackScroll();
-            int[] visibleRange = mTmpVisibleRange;
-            boolean isValidVisibleRange = updateStackTransforms(mCurrentTaskTransforms,
-                    data, stackScroll, visibleRange, false);
-
-            // Return all the invisible children to the pool
-            mTmpTaskViewMap.clear();
-            int childCount = getChildCount();
-            for (int i = childCount - 1; i >= 0; i--) {
-                DeckChildView<T> tv = (DeckChildView) getChildAt(i);
-                T key = tv.getAttachedKey();
-                int taskIndex = data.indexOf(key);
-
-                if (visibleRange[1] <= taskIndex
-                        && taskIndex <= visibleRange[0]) {
-                    mTmpTaskViewMap.put(key, tv);
-                } else {
-                    mViewPool.returnViewToPool(tv);
-                }
-            }
-
-            for (int i = visibleRange[0]; isValidVisibleRange && i >= visibleRange[1]; i--) {
-                T key = data.get(i);
-                DeckChildViewTransform transform = mCurrentTaskTransforms.get(i);
-                DeckChildView tv = mTmpTaskViewMap.get(key);
-
-                if (tv == null) {
-                    // TODO Check
-                    tv = mViewPool.pickUpViewFromPool(key, key);
-
-                    if (mStackViewsAnimationDuration > 0) {
-                        // For items in the list, put them in start animating them from the
-                        // approriate ends of the list where they are expected to appear
-                        if (Float.compare(transform.p, 0f) <= 0) {
-                            mLayoutAlgorithm.getStackTransform(0f, 0f, mTmpTransform, null);
-                        } else {
-                            mLayoutAlgorithm.getStackTransform(1f, 0f, mTmpTransform, null);
-                        }
-                        tv.updateViewPropertiesToTaskTransform(mTmpTransform, 0);
-                    }
-                }
-
-                // Animate the task into place
-                tv.updateViewPropertiesToTaskTransform(mCurrentTaskTransforms.get(i),
-                        mStackViewsAnimationDuration, mRequestUpdateClippingListener);
-            }
-
-            // Reset the request-synchronize params
-            mStackViewsAnimationDuration = 0;
-            mStackViewsDirty = false;
-            mStackViewsClipDirty = true;
-            return true;
-        }
+//        if (mStackViewsDirty) {
+//            // Get all the task transforms
+//            ArrayList<T> data = mCallback.getData();
+//            float stackScroll = mStackScroller.getStackScroll();
+//            int[] visibleRange = mTmpVisibleRange;
+//            boolean isValidVisibleRange = updateStackTransforms(mCurrentTaskTransforms,
+//                    data, stackScroll, visibleRange, false);
+//
+//            // Return all the invisible children to the pool
+//            mTmpTaskViewMap.clear();
+//            int childCount = getChildCount();
+//            for (int i = childCount - 1; i >= 0; i--) {
+//                DeckChildView<T> tv = (DeckChildView) getChildAt(i);
+//                T key = tv.getAttachedKey();
+//                int taskIndex = data.indexOf(key);
+//
+//                if (visibleRange[1] <= taskIndex
+//                        && taskIndex <= visibleRange[0]) {
+//                    mTmpTaskViewMap.put(key, tv);
+//                } else {
+//                    mViewPool.returnViewToPool(tv);
+//                }
+//            }
+//
+//            for (int i = visibleRange[0]; isValidVisibleRange && i >= visibleRange[1]; i--) {
+//                T key = data.get(i);
+//                DeckChildViewTransform transform = mCurrentTaskTransforms.get(i);
+//                DeckChildView tv = mTmpTaskViewMap.get(key);
+//
+//                if (tv == null) {
+//                    // TODO Check
+//                    tv = mViewPool.pickUpViewFromPool(key, key);
+//
+//                    if (mStackViewsAnimationDuration > 0) {
+//                        // For items in the list, put them in start animating them from the
+//                        // approriate ends of the list where they are expected to appear
+//                        if (Float.compare(transform.p, 0f) <= 0) {
+//                            mLayoutAlgorithm.getStackTransform(0f, 0f, mTmpTransform, null);
+//                        } else {
+//                            mLayoutAlgorithm.getStackTransform(1f, 0f, mTmpTransform, null);
+//                        }
+//                        tv.updateViewPropertiesToTaskTransform(mTmpTransform, 0);
+//                    }
+//                }
+//
+//                // Animate the task into place
+//                tv.updateViewPropertiesToTaskTransform(mCurrentTaskTransforms.get(i),
+//                        mStackViewsAnimationDuration, mRequestUpdateClippingListener);
+//            }
+//
+//            // Reset the request-synchronize params
+//            mStackViewsAnimationDuration = 0;
+//            mStackViewsDirty = false;
+//            mStackViewsClipDirty = true;
+//            return true;
+//        }
         return false;
     }
 

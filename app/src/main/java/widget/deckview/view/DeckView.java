@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import widget.deckview.helper.DeckChildViewTransform;
 import widget.deckview.helper.DeckViewConfig;
 import widget.deckview.helper.DeckViewLayoutAlgorithm;
 
@@ -101,7 +102,7 @@ public class DeckView<T> extends FrameLayout {
      * Synchronizes the views with the model
      */
     boolean synchronizeStackViewsWithModel() {
-//        Log.e("test","child,synchronizeStackViewsWithModel");
+
 //        if (mStackViewsDirty) {
 //            // Get all the task transforms
 //            ArrayList<T> data = mCallback.getData();

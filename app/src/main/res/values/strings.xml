@@ -78,4 +78,6 @@
 	<div>By <a href="mailto:sinpowei@gmail.com">sinpo</a>, 2011.</div>
 	]]>
    </string>
+    <string name="title_activity_thread_pool">ThreadPoolActivity</string>
+    <string name="title_activity_okhttp">OKHttpActivity</string>
 </resources>

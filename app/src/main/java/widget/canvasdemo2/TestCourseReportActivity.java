@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.wz.myapp.R;
 
 /**
- * Ö÷Ò³Ãæ
+ï¿½
  * @author DuGuang
- * blogµØÖ·£ºhttp://blog.csdn.net/duguang77
+ * blogï¿½ï¿½Ö·ï¿½ï¿½http://blog.csdn.net/duguang77
  *
  */
 public class TestCourseReportActivity extends Activity {
@@ -72,17 +72,17 @@ public class TestCourseReportActivity extends Activity {
 		mFlMain.addView(mTrigon,2);
 		mFlMain.addView(circle,3);
 
-		//¿ªÊ¼»­Èý½ÇÐÎ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		startDraw();
 
-		// »ñÈ¡ÆÁÄ»¿í¸ß£¨·½·¨1£©
-		mWidth = getWindowManager().getDefaultDisplay().getWidth(); // ÆÁÄ»¿í
-		mHeight = getWindowManager().getDefaultDisplay().getHeight(); // ÆÁÄ»¸ß
+		// ï¿½ï¿½È¡ï¿½ï¿½Ä»ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½
+		mWidth = getWindowManager().getDefaultDisplay().getWidth(); // ï¿½ï¿½Ä»ï¿½ï¿½
+		mHeight = getWindowManager().getDefaultDisplay().getHeight(); // ï¿½ï¿½Ä»ï¿½ï¿½
 
 		int width = mWidth / 2 - mWidth /8 ;
 		int height = mHeight / 4 - mHeight/12;
 
-		//ÕâÀïµÚÒ»¸öTextView¾¹È»ÏÔÊ¾²»³öÀ´£¬²»ÖªµÀÎªÊ²Ã´£¬×ö¸ö±ê¼Ç£¬ÒÔºóÐÞ¸Ä
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½TextViewï¿½ï¿½È»ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ÎªÊ²Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½ï¿½Ôºï¿½ï¿½Þ¸ï¿½
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		params.topMargin = height+40;
@@ -122,12 +122,12 @@ public class TestCourseReportActivity extends Activity {
 	}
 
 	/**
-	 * ¿ªÊ¼»­Èý½ÇÐÎ
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	private void startDraw() {
 		new Thread() {
 			public void run() {
-				//ÕâÀïÆô¶¯Ïß³ÌÊÇÎªÁË·ÀÖ¹layout²¼¾ÖÎÄ¼þ»¹Ã»ÓÐÍê³É£¬È¥»ñÈ¡Öù×´Ìå¶¥²¿×ø±êµÄÊ±ºòNullÒì³£
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½Îªï¿½Ë·ï¿½Ö¹layoutï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½É£ï¿½È¥ï¿½ï¿½È¡ï¿½ï¿½×´ï¿½å¶¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Nullï¿½ì³£
 				SystemClock.sleep(300);
 				mPointList.addAll(mCusRect.getPointList());
 				for (int i = 0; i < mCusRect.getPointList().size(); i++) {
@@ -135,7 +135,7 @@ public class TestCourseReportActivity extends Activity {
 					mPoint = mPointList.get(i);
 					mHandler.sendEmptyMessage(0);
 					
-					//Õâ¸öÅÐ¶ÏÊÇÎªÁËÕ¹Ê¾DemoÊ±×öµÄÑ­»·
+					//ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½Îªï¿½ï¿½Õ¹Ê¾DemoÊ±ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 					if(i == 5){
 						startDraw();
 					}

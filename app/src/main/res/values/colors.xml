@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
 
     <color name="sliding_menu_item_down">#ff39393b</color>
     <color name="sliding_menu_item_release">#00000000</color>
@@ -121,4 +119,8 @@
     <color name="text_alarm">#FF506650</color>
     <color name="text_tip">#FFA0A0A0</color>
     <color name="text_button">#FF3F3F3F</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
 </resources>

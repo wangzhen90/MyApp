@@ -1,5 +1,7 @@
 package com.wz.myapp.net.okhttputils.request;
 
+import com.wz.myapp.net.okhttputils.callback.BaseCallback;
+
 import java.util.Map;
 
 import okhttp3.Headers;
@@ -19,7 +21,7 @@ public abstract class BaseRequest {
 
     Request.Builder builder = new Request.Builder();
 
-    BaseRequest(String url, Object tag, Map<String, String> headers, Map<String, String> params, String cacheKey) {
+    public BaseRequest(String url, Object tag, Map<String, String> headers, Map<String, String> params, String cacheKey) {
         this.url = url;
         this.tag = tag;
         this.params = params;
@@ -57,6 +59,11 @@ public abstract class BaseRequest {
      * @return
      */
     abstract Request buildRequest(RequestBody requestBody);
+
+    RequestBody detectRequestBody(RequestBody requestBody, final BaseCallback callback) {
+        return requestBody;
+    }
+
 
     public Request generateRequest() {
         return buildRequest(buildRequestBody());

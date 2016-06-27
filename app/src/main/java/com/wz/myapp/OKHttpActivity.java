@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
+import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -95,7 +97,6 @@ public class OKHttpActivity extends AppCompatActivity {
             }
 
         }).start();
-
     }
 
     void testGetAsync() {

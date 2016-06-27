@@ -55,7 +55,7 @@ public class ApiClient {
 
     }
 
-    public void enqueue(Request request,BaseCallback callback){
+    public void enqueue(Request request, final BaseCallback callback){
 
 
         mOkHttpClient.newCall(request).enqueue(new Callback() {
@@ -66,6 +66,17 @@ public class ApiClient {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
+                if(callback != null){
+                    try {
+                        callback.parseNetworkResponse(response);
+
+                        callback.onResponse(call,);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });

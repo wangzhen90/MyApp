@@ -1,5 +1,7 @@
 package com.wz.myapp.net.okhttputils.builder;
 
+import com.wz.myapp.net.okhttputils.ApiClient;
+import com.wz.myapp.net.okhttputils.ApiConfig;
 import com.wz.myapp.net.okhttputils.request.BaseRequest;
 
 import java.util.LinkedHashMap;
@@ -8,7 +10,7 @@ import java.util.Map;
 /**
  * Created by dell on 2016/6/16.
  */
-public abstract class BaseBuilder<T extends BaseBuilder,V extends BaseRequest> {
+public abstract class BaseBuilder<T extends BaseBuilder, V extends BaseRequest> {
 
     String url;
     Object tag;
@@ -22,7 +24,8 @@ public abstract class BaseBuilder<T extends BaseBuilder,V extends BaseRequest> {
     }
 
     public T url(String url) {
-        this.url = url;
+        this.url = ApiConfig.hosts + url;
+
         return (T) this;
     }
 

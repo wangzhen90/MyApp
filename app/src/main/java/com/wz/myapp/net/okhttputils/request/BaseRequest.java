@@ -1,5 +1,6 @@
 package com.wz.myapp.net.okhttputils.request;
 
+import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
 
 import java.util.Map;
@@ -65,8 +66,21 @@ public abstract class BaseRequest {
     }
 
 
-    public Request generateRequest() {
-        return buildRequest(buildRequestBody());
+    public Request generateRequest(BaseCallback callback) {
+        return buildRequest(detectRequestBody(buildRequestBody(), callback));
     }
+
+    public void enqueue(BaseCallback callback) {
+
+        Request request = generateRequest(callback);
+        ApiClient.getInstance().enqueue(request, callback);
+
+    }
+
+    public void excute(){
+        Request request = generateRequest(null);
+
+    }
+
 
 }

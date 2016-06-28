@@ -2,6 +2,8 @@ package com.wz.myapp.net.okhttputils.request;
 
 import android.net.Uri;
 
+import com.wz.myapp.net.okhttputils.callback.BaseCallback;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -48,4 +50,7 @@ public class GetRequest extends BaseRequest {
         }
         return builder.build().toString();
     }
+
+
+
 }

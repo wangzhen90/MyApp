@@ -3,6 +3,7 @@ package com.wz.myapp.net.okhttputils.builder;
 import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.ApiConfig;
 import com.wz.myapp.net.okhttputils.request.BaseRequest;
+import com.wz.myapp.net.okhttputils.request.RequestCall;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,13 +11,21 @@ import java.util.Map;
 /**
  * Created by dell on 2016/6/16.
  */
-public abstract class BaseBuilder<T extends BaseBuilder, V extends BaseRequest> {
+public abstract class BaseBuilder<T extends BaseBuilder> {
 
     String url;
     Object tag;
     Map<String, String> headers;
+
     Map<String, String> params;
+    //    /**
+//     * 表单参数
+//     */
+//    Map<String, String> formParams;
     String cacheKey;
+
+    boolean isAddGloabalHeaders = true;
+    boolean isAddGloabalParams = true;
 
     public T cacheKey(String cacheKey) {
         this.cacheKey = cacheKey;
@@ -24,7 +33,7 @@ public abstract class BaseBuilder<T extends BaseBuilder, V extends BaseRequest> 
     }
 
     public T url(String url) {
-        this.url = ApiConfig.hosts + url;
+        this.url = url;
 
         return (T) this;
     }
@@ -47,5 +56,15 @@ public abstract class BaseBuilder<T extends BaseBuilder, V extends BaseRequest> 
         return (T) this;
     }
 
-    public abstract V build();
+    public T addGlobalHeaders(boolean isAdd) {
+        this.isAddGloabalHeaders = isAdd;
+        return (T) this;
+    }
+
+    public T addGlobalParams(boolean isAdd) {
+        this.isAddGloabalParams = isAdd;
+        return (T) this;
+    }
+
+    public abstract RequestCall build();
 }

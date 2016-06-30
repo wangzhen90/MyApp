@@ -49,7 +49,7 @@ public abstract class BaseCallback<T extends Object> {
     };
 
     /**
-     * 获取泛型，用于Gson解析
+     * 鑾峰彇娉涘瀷
      * @return
      */
     Type getType(){

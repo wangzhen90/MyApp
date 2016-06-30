@@ -10,14 +10,13 @@ public class ApiConfig {
 
 
 
-    public static  String hosts = "https://crm-dev6.xiaoshouyi.com/mobile";
+    public static final String HOSTS = "https://crm-dev6.xiaoshouyi.com/mobile";
+    public static final String DOWNLOAD_HOSTS = "https://xsybucket.s3.cn-north-1.amazonaws.com.cn";
     public static  boolean isShowResponse;
     public static  boolean debug;
 
     public static void setDebug(boolean debug) {
         ApiConfig.debug = debug;
     }
-    public static void setHosts(String hosts) {
-        ApiConfig.hosts = hosts;
-    }
+
 }

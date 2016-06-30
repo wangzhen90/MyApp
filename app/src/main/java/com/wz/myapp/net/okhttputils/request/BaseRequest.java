@@ -3,6 +3,7 @@ package com.wz.myapp.net.okhttputils.request;
 import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Headers;
@@ -21,13 +22,17 @@ public abstract class BaseRequest {
     String cacheKey;
 
     Request.Builder builder = new Request.Builder();
+    boolean isAddGloabalHeaders = true;
+    boolean isAddGloabalParams = true;
 
-    public BaseRequest(String url, Object tag, Map<String, String> headers, Map<String, String> params, String cacheKey) {
+    public BaseRequest(String url, Object tag, Map<String, String> headers, Map<String, String> params, String cacheKey, boolean isAddGloabalHeaders, boolean isAddGloabalParams) {
         this.url = url;
         this.tag = tag;
         this.params = params;
         this.headers = headers;
         this.cacheKey = cacheKey;
+        this.isAddGloabalHeaders = isAddGloabalHeaders;
+        this.isAddGloabalParams = isAddGloabalParams;
 
         if (url == null) {
             throw new IllegalArgumentException("url can not be null!");
@@ -38,10 +43,16 @@ public abstract class BaseRequest {
 
     private void initBuilder() {
         builder.url(url);
-        appendHeaders();
+
+        if (isAddGloabalHeaders) {
+            appendHeaders(ApiClient.getInstance().getGloabalHeaders());
+        } else {
+            removeHeaders(ApiClient.getInstance().getGloabalHeaders());
+        }
+        appendHeaders(headers);
     }
 
-    void appendHeaders() {
+    void appendHeaders(Map<String, String> headers) {
         Headers.Builder headerBuilder = new Headers.Builder();
         if (headers == null || headers.isEmpty()) return;
 
@@ -49,6 +60,13 @@ public abstract class BaseRequest {
             headerBuilder.add(key, headers.get(key));
         }
         builder.headers(headerBuilder.build());
+    }
+
+    void removeHeaders(Map<String, String> headers) {
+        if (headers == null || headers.isEmpty()) return;
+        for (String key : headers.keySet()) {
+            builder.removeHeader(key);
+        }
     }
 
 
@@ -70,16 +88,8 @@ public abstract class BaseRequest {
         return buildRequest(detectRequestBody(buildRequestBody(), callback));
     }
 
-    public void enqueue(BaseCallback callback) {
-
-        Request request = generateRequest(callback);
-        ApiClient.getInstance().enqueue(request, callback);
-
-    }
-
-    public void excute(){
-        Request request = generateRequest(null);
-
+    public RequestCall build() {
+        return new RequestCall(this);
     }
 
 

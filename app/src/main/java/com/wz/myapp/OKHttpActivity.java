@@ -1,6 +1,7 @@
 package com.wz.myapp;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -8,11 +9,14 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wz.myapp.net.okhttputils.ApiClient;
+import com.wz.myapp.net.okhttputils.ApiConfig;
+import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
 import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -136,10 +140,7 @@ public class OKHttpActivity extends AppCompatActivity {
     public void testApiGet() {
 
         ApiClient.getInstance().get()
-                .addHeader("Cookie", "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"")
-                .addHeader("charset", "UTF-8")
-                .addHeader("Accept-Encoding", "gzip")
-                .url("/count/undo-counts.action?source=1&os=22&model=motorola+victara&cache_key=78734&appType=0&_vs=4.1.4")
+                .url(ApiConfig.HOSTS + "/count/undo-counts.action")
                 .build().enqueue(new JsonCallBack<JsonBacklogs>() {
             @Override
             public void onResponse(Call call, JsonBacklogs response) {
@@ -151,6 +152,11 @@ public class OKHttpActivity extends AppCompatActivity {
                 Log.e("ApiClient", "onFailure");
             }
         });
+    }
+
+    public void testApiGetFile() {
+
+//        ApiClient.getInstance().get()
 
 
     }
@@ -277,12 +283,12 @@ public class OKHttpActivity extends AppCompatActivity {
                 "}\n" +
                 "}";
 
-        Gson gson ;
+        Gson gson;
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(long.class, TypeAdapters.LONG);
-        gsonBuilder.registerTypeAdapter(double.class,TypeAdapters.DOUBLE);
-        gsonBuilder.registerTypeAdapter(int.class,TypeAdapters.INTEGER);
-        gsonBuilder.registerTypeAdapter(float.class,TypeAdapters.FLOAT);
+        gsonBuilder.registerTypeAdapter(double.class, TypeAdapters.DOUBLE);
+        gsonBuilder.registerTypeAdapter(int.class, TypeAdapters.INTEGER);
+        gsonBuilder.registerTypeAdapter(float.class, TypeAdapters.FLOAT);
         gson = gsonBuilder.create();
         JsonBacklogs jsonBase = gson.fromJson(jsonStr, JsonBacklogs.class);
         Log.e("test_gson", "jsonBase:" + jsonBase.body.unDealLists.size());
@@ -292,6 +298,33 @@ public class OKHttpActivity extends AppCompatActivity {
 
     public void test_api_get(View view) {
         testApiGet();
+    }
+
+    public void test_api_get_file(View view) {
+        ApiClient.getInstance().get()
+                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/06/29/e46ee726-2eb3-4028-9a2e-b15582db1d18.pdf")
+                .addGlobalHeaders(false)
+                .addGlobalParams(false)
+
+                .build()
+                .enqueue(new FileCallback(Environment.getExternalStorageDirectory() + "/Android/data/","110.pdf") {
+                    @Override
+                    public void onResponse(Call call, File response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Exception error) {
+
+                    }
+
+                    @Override
+                    public void onProgress(long bytesRead, long contentLength, boolean done) {
+                        Log.e("getFile","progress:" + bytesRead/contentLength+",hasRead:" +bytesRead+",contentLength:"+contentLength+",done:"+done);
+
+
+                    }
+                });
     }
 
 

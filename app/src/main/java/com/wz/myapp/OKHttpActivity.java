@@ -1,5 +1,8 @@
 package com.wz.myapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.ApiConfig;
 import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
+import com.wz.myapp.net.okhttputils.helper.ResFileHelper;
 import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
@@ -303,11 +307,12 @@ public class OKHttpActivity extends AppCompatActivity {
     public void test_api_get_file(View view) {
         ApiClient.getInstance().get()
                 .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/06/29/e46ee726-2eb3-4028-9a2e-b15582db1d18.pdf")
-                .addGlobalHeaders(false)
+//                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/07/01/d01b63b7-9844-4ea6-a0cb-8e1ab0626a1d.txt")
+//                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/07/01/0fb89dea-0c82-49a2-8b76-35eebea6278d.jpg")
+                .addGlobalHeaders(true)
                 .addGlobalParams(false)
-
                 .build()
-                .enqueue(new FileCallback(Environment.getExternalStorageDirectory() + "/Android/data/","110.pdf") {
+                .enqueue(new FileCallback(Environment.getExternalStorageDirectory() + "/1myapp", "test1.pdf") {
                     @Override
                     public void onResponse(Call call, File response) {
 
@@ -320,12 +325,28 @@ public class OKHttpActivity extends AppCompatActivity {
 
                     @Override
                     public void onProgress(long bytesRead, long contentLength, boolean done) {
-                        Log.e("getFile","progress:" + bytesRead/contentLength+",hasRead:" +bytesRead+",contentLength:"+contentLength+",done:"+done);
+                        Log.e("getFile", "progress:" + bytesRead / contentLength + ",hasRead:" + bytesRead + ",contentLength:" + contentLength + ",done:" + done);
 
 
                     }
+
+                    @Override
+                    public void onAfter() {
+                        openFile(OKHttpActivity.this, Environment.getExternalStorageDirectory() + "/1myapp"+"test1.pdf");
+                    }
                 });
     }
+
+    public static void openFile(Context context,String path){
+        Intent intent = ResFileHelper.openFile(path);
+        try{
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException exception){
+            intent = ResFileHelper.getAllIntent(path);
+            context.startActivity(intent);
+        }
+    }
+
 
 
 }

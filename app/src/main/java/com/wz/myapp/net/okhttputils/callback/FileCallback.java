@@ -29,9 +29,9 @@ public abstract class FileCallback extends BaseCallback<File> {
     }
 
     public File saveFile(Response response) throws IOException {
-        InputStream is = null;
-        byte[] buffer = new byte[1024 * 2];
-        int len = -1;
+        InputStream is;
+        byte[] buffer = new byte[1024];
+        int len;
         FileOutputStream os = null;
 
         try {
@@ -50,10 +50,10 @@ public abstract class FileCallback extends BaseCallback<File> {
             }
 
             os = new FileOutputStream(file);
-
-            while ((len = is.read(buffer)) != -1) {
+            //读写长度要注意
+            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
                 downLength += len;
-                os.write(buffer);
+                os.write(buffer, 0, len);
                 final long finalDownLength = downLength;
                 ApiClient.getInstance().runOnUI(new Runnable() {
                     @Override

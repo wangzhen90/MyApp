@@ -1,12 +1,26 @@
 package com.wz.myapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
-import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.wz.myapp.net.okhttputils.ApiClient;
+import com.wz.myapp.net.okhttputils.ApiConfig;
+import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
+import com.wz.myapp.net.okhttputils.helper.ResFileHelper;
+import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
+import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
+import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -32,7 +46,8 @@ public class OKHttpActivity extends AppCompatActivity {
 //        testGetSync();
 //        testGetAsync();
 //        testPostString();
-        testGetFile();
+//        testGetFile();
+//        testApiGet();
     }
 
     void testHeader() {
@@ -101,15 +116,20 @@ public class OKHttpActivity extends AppCompatActivity {
 
     void testGetAsync() {
         Request request = new Request.Builder()
-                .url("https://github.com/hongyangAndroid")
+                .url("https://crm-dev6.xiaoshouyi.com/mobile/count/undo-counts.action?source=1&os=22&model=motorola+victara&cache_key=78734&appType=0&_vs=4.1.4")
+                .header("Cookie", "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"")
+                .header("charset", "UTF-8")
+                .header("Accept-Encoding", "gzip")
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-            @Override public void onFailure(Call call, IOException e) {
+            @Override
+            public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
 
-            @Override public void onResponse(Call call, Response response) throws IOException {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
                 Headers responseHeaders = response.headers();
                 for (int i = 0; i < responseHeaders.size(); i++) {
@@ -119,6 +139,28 @@ public class OKHttpActivity extends AppCompatActivity {
                 System.out.println(response.body().string());
             }
         });
+    }
+
+    public void testApiGet() {
+
+        ApiClient.getInstance().get()
+                .url(ApiConfig.HOSTS + "/count/undo-counts.action")
+                .build().enqueue(new JsonCallBack<JsonBacklogs>() {
+            @Override
+            public void onResponse(Call call, JsonBacklogs response) {
+                Log.e("ApiClient", "onResponse,body response:" + response.body.unDealLists.size());
+            }
+
+            @Override
+            public void onFailure(Call call, Exception error) {
+                Log.e("ApiClient", "onFailure");
+            }
+        });
+    }
+
+    public void testApiGetFile() {
+
+//        ApiClient.getInstance().get()
 
 
     }
@@ -160,44 +202,151 @@ public class OKHttpActivity extends AppCompatActivity {
     }
 
 
-    void testGetFile(){
+    void testGetFile() {
         final ProgressResponseBody.ProgressListener progressListener = new ProgressResponseBody.ProgressListener() {
-            @Override public void update(long bytesRead, long contentLength, boolean done) {
+            @Override
+            public void update(long bytesRead, long contentLength, boolean done) {
                 System.out.println(bytesRead);
                 System.out.println(contentLength);
                 System.out.println(done);
                 System.out.format("%d%% done\n", (100 * bytesRead) / contentLength);
-                Log.e("okTest", "bytesRead:"+bytesRead);
-                Log.e("okTest", "contentLength:"+contentLength);
-                Log.e("okTest", "done:"+done);
-                Log.e("okTest", "progress:"+(100 * bytesRead) / contentLength);
+                Log.e("okTest", "bytesRead:" + bytesRead);
+                Log.e("okTest", "contentLength:" + contentLength);
+                Log.e("okTest", "done:" + done);
+                Log.e("okTest", "progress:" + (100 * bytesRead) / contentLength);
             }
         };
 
         OkHttpClient client = new OkHttpClient.Builder()
-            .addNetworkInterceptor(new Interceptor() {
-              @Override public Response intercept(Chain chain) throws IOException {
-                Response originalResponse = chain.proceed(chain.request());
-                return originalResponse.newBuilder()
-                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                    .build();
-              }
-            })
-            .build();
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse.newBuilder()
+                                .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                                .build();
+                    }
+                })
+                .build();
         Request request = new Request.Builder()
-            .url("https://codeload.github.com/jeasonlzy0216/OkHttpUtils/zip/master")
-            .build();
+                .url("https://codeload.github.com/jeasonlzy0216/OkHttpUtils/zip/master")
+                .build();
 
         client.newCall(request).enqueue(new Callback() {
-            @Override public void onFailure(Call call, IOException e) {
+            @Override
+            public void onFailure(Call call, IOException e) {
                 Log.e("okTest", e.getMessage());
             }
 
-            @Override public void onResponse(Call call, Response response) throws IOException {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 Log.e("okTest", response.body().string());
             }
         });
     }
+
+    public void test_gson(View view) {
+
+        String jsonStr = "{\n" +
+                "scode: \"0\",\n" +
+                "head: {\n" +
+                "uid: 78734,\n" +
+                "tid: 40541,\n" +
+                "isex: false\n" +
+                "},\n" +
+                "body: {\n" +
+                "unDealLists: [\n" +
+                "{\n" +
+                "title: \"审批_报销单 stand A chance 【999999.0】\",\n" +
+                "userName: \"wz\",\n" +
+                "startDate: 1465786476660,\n" +
+                "endDate: \"\",\n" +
+                "belongId: 64,\n" +
+                "type: \"approval\",\n" +
+                "count: 23\n" +
+                "},\n" +
+                "{\n" +
+                "title: \"日报 【2016-06-06】\",\n" +
+                "userName: \"于圆圆\",\n" +
+                "startDate: 1465201904750,\n" +
+                "endDate: \"\",\n" +
+                "belongId: 101222,\n" +
+                "type: \"workreport\",\n" +
+                "count: 2\n" +
+                "},\n" +
+                "{\n" +
+                "title: \"各地\",\n" +
+                "userName: \"wz\",\n" +
+                "startDate: 1462957200000,\n" +
+                "endDate: \"\",\n" +
+                "belongId: \"\",\n" +
+                "type: \"task\",\n" +
+                "count: 21\n" +
+                "}\n" +
+                "]\n" +
+                "}\n" +
+                "}";
+
+        Gson gson;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(long.class, TypeAdapters.LONG);
+        gsonBuilder.registerTypeAdapter(double.class, TypeAdapters.DOUBLE);
+        gsonBuilder.registerTypeAdapter(int.class, TypeAdapters.INTEGER);
+        gsonBuilder.registerTypeAdapter(float.class, TypeAdapters.FLOAT);
+        gson = gsonBuilder.create();
+        JsonBacklogs jsonBase = gson.fromJson(jsonStr, JsonBacklogs.class);
+        Log.e("test_gson", "jsonBase:" + jsonBase.body.unDealLists.size());
+
+
+    }
+
+    public void test_api_get(View view) {
+        testApiGet();
+    }
+
+    public void test_api_get_file(View view) {
+        ApiClient.getInstance().get()
+                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/06/29/e46ee726-2eb3-4028-9a2e-b15582db1d18.pdf")
+//                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/07/01/d01b63b7-9844-4ea6-a0cb-8e1ab0626a1d.txt")
+//                .url("https://xsybucket.s3.cn-north-1.amazonaws.com.cn/101/2016/07/01/0fb89dea-0c82-49a2-8b76-35eebea6278d.jpg")
+                .addGlobalHeaders(true)
+                .addGlobalParams(false)
+                .build()
+                .enqueue(new FileCallback(Environment.getExternalStorageDirectory() + "/1myapp", "test1.pdf") {
+                    @Override
+                    public void onResponse(Call call, File response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Exception error) {
+
+                    }
+
+                    @Override
+                    public void onProgress(long bytesRead, long contentLength, boolean done) {
+                        Log.e("getFile", "progress:" + bytesRead / contentLength + ",hasRead:" + bytesRead + ",contentLength:" + contentLength + ",done:" + done);
+
+
+                    }
+
+                    @Override
+                    public void onAfter() {
+                        openFile(OKHttpActivity.this, Environment.getExternalStorageDirectory() + "/1myapp"+"test1.pdf");
+                    }
+                });
+    }
+
+    public static void openFile(Context context,String path){
+        Intent intent = ResFileHelper.openFile(path);
+        try{
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException exception){
+            intent = ResFileHelper.getAllIntent(path);
+            context.startActivity(intent);
+        }
+    }
+
 
 
 }

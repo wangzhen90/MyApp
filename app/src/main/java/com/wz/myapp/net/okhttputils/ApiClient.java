@@ -2,12 +2,16 @@ package com.wz.myapp.net.okhttputils;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import com.wz.myapp.net.okhttputils.builder.GetBuilder;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
-import com.wz.myapp.net.okhttputils.request.GetRequest;
+import com.wz.myapp.net.okhttputils.intercepter.LoggerInterceptor;
+import com.wz.myapp.net.okhttputils.request.RequestCall;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -21,101 +25,158 @@ import okhttp3.Response;
  */
 public class ApiClient {
 
-  private ApiClient INSTANCE;
-  private OkHttpClient mOkHttpClient;
-  public static final int CONNECT_TIMEOUT = 10;
-  public static final int WRITE_TIMEOUT = 10;
-  public static final int READ_TIMEOUT = 30;
-  private final Handler mUIHandler;
+    private static ApiClient INSTANCE;
 
-  private ApiClient() {
-    mUIHandler = new Handler(Looper.getMainLooper());
-    mOkHttpClient = new OkHttpClient.Builder().connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-        .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-        .build();
-  }
 
-  public ApiClient getInstance() {
+    private OkHttpClient mOkHttpClient;
 
-    if (INSTANCE == null) {
-      synchronized ((ApiClient.class)) {
+    private final Handler mUIHandler;
+    private boolean isShowResponse = true;
+    private boolean isShowRequest;
+    private Map<String, String> gloableHeaders;
+    private Map<String, String> gloableParams;
+
+    private ApiClient() {
+        mUIHandler = new Handler(Looper.getMainLooper());
+        mOkHttpClient = new OkHttpClient.Builder().connectTimeout(ApiConfig.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(ApiConfig.WRITE_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(ApiConfig.READ_TIMEOUT, TimeUnit.SECONDS)
+//                .addInterceptor(new ApiHeader())
+                .addInterceptor(new LoggerInterceptor(null, isShowResponse))
+                .build();
+
+
+    }
+
+    public static ApiClient getInstance() {
+
         if (INSTANCE == null) {
-          INSTANCE = new ApiClient();
+            synchronized ((ApiClient.class)) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ApiClient();
+                }
+            }
         }
-      }
+        return INSTANCE;
     }
-    return INSTANCE;
-  }
 
-  public GetBuilder get() {
-    return new GetBuilder();
-  }
-
-  public void excute(Request request, BaseCallback callback) {
-
-    //        mOkHttpClient.newCall(request).enqueue(callback);
-
-  }
-
-  public void enqueue(Request request, BaseCallback callback) {
-
-    if (callback == null) {
-      callback = BaseCallback.DEFALT_CALLBACK;
+    public OkHttpClient getOkHttpClient() {
+        return mOkHttpClient;
     }
-    final BaseCallback finalCallback = callback;
-    finalCallback.onBefore();
-    mOkHttpClient.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Call call, IOException e) {
-        sendFailResultCallback(call, e, finalCallback);
-      }
 
-      @Override public void onResponse(Call call, Response response) throws IOException {
+    public GetBuilder get() {
+        return new GetBuilder();
+    }
 
-        try {
-          if (call.isCanceled()) {
-            sendFailResultCallback(call, new IOException("Request had cancel!"), finalCallback);
+    public void excute(Request request, BaseCallback callback) {
+
+        //TODO
+
+    }
+
+    public void enqueue(RequestCall requestCall, BaseCallback callback) {
+        if (callback == null) {
+            callback = BaseCallback.DEFALT_CALLBACK;
+        }
+        final BaseCallback finalCallback = callback;
+        finalCallback.onBefore();
+        Call call = requestCall.getCall();
+        if (call == null) {
             return;
-          }
-          Object obj = finalCallback.parseNetworkResponse(response);
-          senSuccResultCallback(call, obj, finalCallback);
-        } catch (Exception e) {
-          sendFailResultCallback(call, e, finalCallback);
-          e.printStackTrace();
-        } finally {
-          if (response != null) {
-            response.close();
-          }
         }
-      }
-    });
-  }
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                sendFailResultCallback(call, e, finalCallback);
+            }
 
-  private void sendFailResultCallback(final Call call, final Exception e,
-      final BaseCallback callback) {
-    mUIHandler.post(new Runnable() {
-      @Override public void run() {
-        try {
-          callback.onFailure(call, e);
-          callback.onAfter();
-        } catch (Exception e1) {
-          e1.printStackTrace();
-        }
-      }
-    });
-  }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    if (call.isCanceled()) {
+                        sendFailResultCallback(call, new IOException("Request had cancel!"), finalCallback);
+                        return;
+                    }
+                    Object obj = finalCallback.parseNetworkResponse(response);
+                    senSuccResultCallback(call, obj, finalCallback);
+                } catch (Exception e) {
+                    sendFailResultCallback(call, e, finalCallback);
+                    e.printStackTrace();
+                } finally {
+                    if (response != null) {
+                        response.close();
+                    }
+                }
+            }
+        });
+    }
 
-  private void senSuccResultCallback(final Call call, final Object response,
-      final BaseCallback callback) {
-    mUIHandler.post(new Runnable() {
-      @Override public void run() {
-        try {
-          callback.onResponse(call, response);
-          callback.onAfter();
-        } catch (Exception e) {
-          e.printStackTrace();
+    private void sendFailResultCallback(final Call call, final Exception e,
+                                        final BaseCallback callback) {
+        mUIHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    callback.onFailure(call, e);
+                    callback.onAfter();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void senSuccResultCallback(final Call call, final Object response,
+                                       final BaseCallback callback) {
+        mUIHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    callback.onResponse(call, response);
+                    callback.onAfter();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void cancel(Object tag) {
+
+        for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
         }
-      }
-    });
-  }
+        for (Call call : mOkHttpClient.dispatcher().runningCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+    }
+
+    public void runOnUI(Runnable runnable) {
+        mUIHandler.post(runnable);
+    }
+
+
+    public ApiClient addGloableHeaders(Map<String, String> headers) {
+        gloableHeaders = headers;
+        return this;
+    }
+
+    public Map<String, String> getGloabalHeaders() {
+        return gloableHeaders;
+    }
+
+    public ApiClient addGloableParams(Map<String, String> params) {
+        gloableParams = params;
+        return this;
+    }
+
+    public Map<String, String> getGloabalParams() {
+        return gloableParams;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.wz.myapp.net.okhttputils.httpbody;
 
+import com.wz.myapp.net.okhttputils.helper.ProgressListener;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;

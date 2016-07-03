@@ -19,7 +19,8 @@ public class AppApplication extends Application {
         instance = this;
 
         HashMap<String, String> headers = new HashMap<>();
-//        headers.put("Cookie", "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"");
+        //headers.put("Cookie", "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"");
+        headers.put("Cookie", "x-ienterprise-passport=\"TmnV7MjKiQjFqN5oPVJoBN1tOoLd2/YX\";userId=\"101\"");
         headers.put("charset", "UTF-8");
         headers.put("Accept-Encoding", "gzip");
 

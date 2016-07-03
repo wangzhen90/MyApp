@@ -50,7 +50,7 @@ public abstract class FileCallback extends BaseCallback<File> {
             }
 
             os = new FileOutputStream(file);
-            //读写长度要注意
+
             while ((len = is.read(buffer, 0, buffer.length)) != -1) {
                 downLength += len;
                 os.write(buffer, 0, len);

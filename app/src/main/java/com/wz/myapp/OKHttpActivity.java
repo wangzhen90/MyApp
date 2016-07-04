@@ -14,11 +14,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.ApiConfig;
+import com.wz.myapp.net.okhttputils.cache.ACache;
 import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
 import com.wz.myapp.net.okhttputils.helper.ResFileHelper;
 import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
+import com.wz.myapp.net.okhttputils.testmodle.CacheResult;
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
 
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogsNew;
@@ -284,9 +286,6 @@ public class OKHttpActivity extends AppCompatActivity {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-
-
   }
 
   public void test_api_get(View view) {
@@ -331,5 +330,25 @@ public class OKHttpActivity extends AppCompatActivity {
       intent = ResFileHelper.getAllIntent(path);
       context.startActivity(intent);
     }
+  }
+
+  public void test_get_cache(View view) {
+    ApiClient.getInstance()
+        .get()
+        .url("http://api.stay4it.com/test/jdsjlzx.php")
+        .cacheKey("http://api.stay4it.com/test/jdsjlzx.php")
+        .addGlobalHeaders(false)
+        .addGlobalHeaders(false)
+        .build()
+        .enqueue(new JsonCallBack<CacheResult>() {
+          @Override public void onResponse(Call call, CacheResult response) {
+            Log.e("test_get_cache",
+                "CacheResult:" + response.resut.data.list.size() + ",cache:" + ((CacheResult)ACache.get().getAsObject("http://api.stay4it.com/test/jdsjlzx.php")).resut.data.list.get(0).desc);
+          }
+
+          @Override public void onFailure(Call call, Exception error) {
+            Log.e("test_get_cache", "failed,error:" + error.getMessage());
+          }
+        });
   }
 }

@@ -17,8 +17,8 @@ public class PostRequest extends BaseRequest {
 
   public PostRequest(String url, Object tag, Map<String, String> headers,
       Map<String, String> params, String cacheKey, boolean isAddGloabalHeaders,
-      boolean isAddGloabalParams, String content, MediaType mediaType) {
-    super(url, tag, headers, params, cacheKey, isAddGloabalHeaders, isAddGloabalParams);
+      boolean isAddGloabalParams, String content, MediaType mediaType,int cacheType) {
+    super(url, tag, headers, params, cacheKey, isAddGloabalHeaders, isAddGloabalParams,cacheType);
     this.content = content;
     this.mediaType = mediaType;
 

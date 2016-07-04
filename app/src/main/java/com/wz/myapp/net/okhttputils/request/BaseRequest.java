@@ -20,6 +20,7 @@ public abstract class BaseRequest {
   Map<String, String> headers;
   Map<String, String> params;
   String cacheKey;
+  int cacheType;
 
   Request.Builder builder = new Request.Builder();
   boolean isAddGloabalHeaders = true;
@@ -27,7 +28,7 @@ public abstract class BaseRequest {
 
   public BaseRequest(String url, Object tag, Map<String, String> headers,
       Map<String, String> params, String cacheKey, boolean isAddGloabalHeaders,
-      boolean isAddGloabalParams) {
+      boolean isAddGloabalParams, int cacheType) {
     this.url = url;
     this.tag = tag;
     this.params = params;
@@ -35,6 +36,7 @@ public abstract class BaseRequest {
     this.cacheKey = cacheKey;
     this.isAddGloabalHeaders = isAddGloabalHeaders;
     this.isAddGloabalParams = isAddGloabalParams;
+    this.cacheType = cacheType;
 
     if (url == null) {
       throw new IllegalArgumentException("url can not be null!");

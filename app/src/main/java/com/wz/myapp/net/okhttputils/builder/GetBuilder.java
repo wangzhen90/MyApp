@@ -15,7 +15,7 @@ public class GetBuilder extends BaseBuilder<GetBuilder> implements HasParamsable
     @Override
     public RequestCall build() {
 
-        return new GetRequest(url, tag, headers, params, cacheKey, isAddGloabalHeaders, isAddGloabalParams).build();
+        return new GetRequest(url, tag, headers, params, cacheKey, isAddGloabalHeaders, isAddGloabalParams,cacheType).build();
     }
 
     @Override

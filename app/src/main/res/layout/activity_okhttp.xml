@@ -32,4 +32,11 @@
         android:text="test_api_get_file"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="test_get_cache"
+        android:text="test_get_cache"
+        />
+
 </LinearLayout>

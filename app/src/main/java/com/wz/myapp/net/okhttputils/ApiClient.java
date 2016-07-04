@@ -4,12 +4,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.wz.myapp.AppApplication;
 import com.wz.myapp.net.okhttputils.builder.GetBuilder;
+import com.wz.myapp.net.okhttputils.cache.ACache;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
 import com.wz.myapp.net.okhttputils.intercepter.LoggerInterceptor;
 import com.wz.myapp.net.okhttputils.request.RequestCall;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -98,6 +101,7 @@ public class ApiClient {
                         return;
                     }
                     Object obj = finalCallback.parseNetworkResponse(response);
+
                     senSuccResultCallback(call, obj, finalCallback);
                 } catch (Exception e) {
                     sendFailResultCallback(call, e, finalCallback);
@@ -177,6 +181,22 @@ public class ApiClient {
     public Map<String, String> getGloabalParams() {
         return gloableParams;
     }
+
+    private void saveCache(String responsString, String cacheTag) {
+        if (responsString != null) {
+            ACache.get().put(cacheTag, responsString);
+        }
+    }
+
+    private void saveCache(Serializable cache, String cacheTag) {
+        if (cache != null) {
+            ACache.get().put(cacheTag, cache);
+        }
+    }
+
+
+
+
 
 
 }

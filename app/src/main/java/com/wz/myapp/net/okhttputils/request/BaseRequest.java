@@ -1,10 +1,14 @@
 package com.wz.myapp.net.okhttputils.request;
 
+import android.net.Uri;
+
 import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Headers;
 import okhttp3.Request;
@@ -20,6 +24,7 @@ public abstract class BaseRequest {
   Map<String, String> headers;
   Map<String, String> params;
   String cacheKey;
+  int cacheType;
 
   Request.Builder builder = new Request.Builder();
   boolean isAddGloabalHeaders = true;
@@ -27,7 +32,7 @@ public abstract class BaseRequest {
 
   public BaseRequest(String url, Object tag, Map<String, String> headers,
       Map<String, String> params, String cacheKey, boolean isAddGloabalHeaders,
-      boolean isAddGloabalParams) {
+      boolean isAddGloabalParams, int cacheType) {
     this.url = url;
     this.tag = tag;
     this.params = params;
@@ -35,6 +40,7 @@ public abstract class BaseRequest {
     this.cacheKey = cacheKey;
     this.isAddGloabalHeaders = isAddGloabalHeaders;
     this.isAddGloabalParams = isAddGloabalParams;
+    this.cacheType = cacheType;
 
     if (url == null) {
       throw new IllegalArgumentException("url can not be null!");
@@ -88,5 +94,19 @@ public abstract class BaseRequest {
 
   public RequestCall build() {
     return new RequestCall(this);
+  }
+  protected String appendParams(String url, Map<String, String> params) {
+    if (url == null || params == null || params.isEmpty()) {
+      return url;
+    }
+    Uri.Builder builder = Uri.parse(url).buildUpon();
+
+    Set<String> keys = params.keySet();
+    Iterator<String> iterator = keys.iterator();
+    while (iterator.hasNext()) {
+      String key = iterator.next();
+      builder.appendQueryParameter(key, params.get(key));
+    }
+    return builder.build().toString();
   }
 }

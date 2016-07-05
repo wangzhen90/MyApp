@@ -35,7 +35,8 @@ public class AppApplication extends Application {
 
         ApiClient.getInstance()
                 .addGloableHeaders(headers)
-                .addGloableParams(params);
+                .addGloableParams(params)
+        ;
 
     }
 

@@ -18,8 +18,8 @@ import okhttp3.RequestBody;
 public class GetRequest extends BaseRequest {
 
   public GetRequest(String url, Object tag, Map<String, String> headers, Map<String, String> params,
-      String cacheKey, boolean isAddGloableHeaders, boolean isAddGloablParams) {
-    super(url, tag, headers, params, cacheKey, isAddGloableHeaders, isAddGloablParams);
+      String cacheKey, boolean isAddGloableHeaders, boolean isAddGloablParams,int cacheType) {
+    super(url, tag, headers, params, cacheKey, isAddGloableHeaders, isAddGloablParams,cacheType);
   }
 
   @Override RequestBody buildRequestBody() {
@@ -41,18 +41,5 @@ public class GetRequest extends BaseRequest {
     return builder.build();
   }
 
-  protected String appendParams(String url, Map<String, String> params) {
-    if (url == null || params == null || params.isEmpty()) {
-      return url;
-    }
-    Uri.Builder builder = Uri.parse(url).buildUpon();
 
-    Set<String> keys = params.keySet();
-    Iterator<String> iterator = keys.iterator();
-    while (iterator.hasNext()) {
-      String key = iterator.next();
-      builder.appendQueryParameter(key, params.get(key));
-    }
-    return builder.build().toString();
-  }
 }

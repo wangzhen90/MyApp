@@ -56,6 +56,8 @@ public class LoggerInterceptor implements Interceptor {
 
             if (showResponse) {
                 ResponseBody body = clone.body();
+
+
                 if (body != null) {
                     MediaType mediaType = body.contentType();
                     if (mediaType != null) {

@@ -52,6 +52,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import com.wz.myapp.AppApplication;
+import android.util.Log;
+
 
 /**
  * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
@@ -73,6 +75,8 @@ public class ACache {
 
 	public static ACache get(Context ctx, String cacheName) {
 		File f = new File(ctx.getCacheDir(), cacheName);
+		Log.e("cache path","path:"+ f.getAbsolutePath());
+
 		return get(f, MAX_SIZE, MAX_COUNT);
 	}
 

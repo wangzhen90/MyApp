@@ -14,11 +14,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.wz.myapp.net.okhttputils.ApiClient;
 import com.wz.myapp.net.okhttputils.ApiConfig;
+import com.wz.myapp.net.okhttputils.cache.ACache;
+import com.wz.myapp.net.okhttputils.callback.BaseCallback;
 import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
 import com.wz.myapp.net.okhttputils.helper.ResFileHelper;
 import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
+import com.wz.myapp.net.okhttputils.testmodle.CacheResult;
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
 
 import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogsNew;
@@ -114,19 +117,21 @@ public class OKHttpActivity extends AppCompatActivity {
         .build();
 
     client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Call call, IOException e) {
-        e.printStackTrace();
-      }
-
-      @Override public void onResponse(Call call, Response response) throws IOException {
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-        Headers responseHeaders = response.headers();
-        for (int i = 0; i < responseHeaders.size(); i++) {
-          System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+        @Override
+        public void onFailure(Call call, IOException e) {
+            e.printStackTrace();
         }
 
-        System.out.println(response.body().string());
-      }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            Headers responseHeaders = response.headers();
+            for (int i = 0; i < responseHeaders.size(); i++) {
+                System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+            }
+
+            System.out.println(response.body().string());
+        }
     });
   }
 
@@ -137,13 +142,15 @@ public class OKHttpActivity extends AppCompatActivity {
         .url(ApiConfig.HOSTS + "/count/undo-counts.action")
         .build()
         .enqueue(new JsonCallBack<JsonBacklogs>() {
-          @Override public void onResponse(Call call, JsonBacklogs response) {
-            Log.e("ApiClient", "onResponse,body response:" + response.body.unDealLists.size());
-          }
+            @Override
+            public void onResponse(Call call, JsonBacklogs response) {
+                Log.e("ApiClient", "onResponse,body response:" + response.body.unDealLists.size());
+            }
 
-          @Override public void onFailure(Call call, Exception error) {
-            Log.e("ApiClient", "onFailure");
-          }
+            @Override
+            public void onFailure(Call call, Exception error) {
+                Log.e("ApiClient", "onFailure");
+            }
         });
   }
 
@@ -205,13 +212,15 @@ public class OKHttpActivity extends AppCompatActivity {
         "https://codeload.github.com/jeasonlzy0216/OkHttpUtils/zip/master").build();
 
     client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Call call, IOException e) {
-        Log.e("okTest", e.getMessage());
-      }
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.e("okTest", e.getMessage());
+        }
 
-      @Override public void onResponse(Call call, Response response) throws IOException {
-        Log.e("okTest", response.body().string());
-      }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            Log.e("okTest", response.body().string());
+        }
     });
   }
 
@@ -285,7 +294,8 @@ public class OKHttpActivity extends AppCompatActivity {
       e.printStackTrace();
     }
 
-
+    ACache.get().put("test_json",jsonStr);
+      Log.e("Acache","respons:"+ACache.get().getAsObject("test_json"));
 
   }
 
@@ -302,25 +312,29 @@ public class OKHttpActivity extends AppCompatActivity {
         .addGlobalParams(false)
         .build()
         .enqueue(
-            new FileCallback(Environment.getExternalStorageDirectory() + "/1myapp", "test1.pdf") {
-              @Override public void onResponse(Call call, File response) {
+                new FileCallback(Environment.getExternalStorageDirectory() + "/1myapp", "test1.pdf") {
+                    @Override
+                    public void onResponse(Call call, File response) {
 
-              }
+                    }
 
-              @Override public void onFailure(Call call, Exception error) {
+                    @Override
+                    public void onFailure(Call call, Exception error) {
 
-              }
+                    }
 
-              @Override public void onProgress(long bytesRead, long contentLength, boolean done) {
-                Log.e("getFile", "progress:" + bytesRead / contentLength + ",hasRead:" + bytesRead
-                    + ",contentLength:" + contentLength + ",done:" + done);
-              }
+                    @Override
+                    public void onProgress(long bytesRead, long contentLength, boolean done) {
+                        Log.e("getFile", "progress:" + bytesRead / contentLength + ",hasRead:" + bytesRead
+                                + ",contentLength:" + contentLength + ",done:" + done);
+                    }
 
-              @Override public void onAfter() {
-                openFile(OKHttpActivity.this,
-                    Environment.getExternalStorageDirectory() + "/1myapp" + "test1.pdf");
-              }
-            });
+                    @Override
+                    public void onAfter() {
+                        openFile(OKHttpActivity.this,
+                                Environment.getExternalStorageDirectory() + "/1myapp" + "test1.pdf");
+                    }
+                });
   }
 
   public static void openFile(Context context, String path) {
@@ -332,4 +346,48 @@ public class OKHttpActivity extends AppCompatActivity {
       context.startActivity(intent);
     }
   }
+
+  public void test_get_cache(View view) {
+    ApiClient.getInstance()
+        .get()
+        .url("http://api.stay4it.com/test/jdsjlzx.php")
+        .cacheKey("http://api.stay4it.com/test/jdsjlzx.php")
+        .addGlobalHeaders(false)
+        .addGlobalHeaders(false)
+//        .cacheType(ApiClient.CACHE_TYPE_CACHE)
+        .build()
+        .enqueue(new JsonCallBack<CacheResult>() {
+          @Override public void onResponse(Call call, CacheResult response) {
+            Log.e("test_get_cache",
+                "CacheResult:" + response.resut.data.list.size() + ",cache:" + ((CacheResult)ACache.get().getAsObject("http://api.stay4it.com/test/jdsjlzx.php")).resut.data.list.get(0).desc);
+          }
+
+          @Override public void onFailure(Call call, Exception error) {
+            Log.e("test_get_cache", "failed,error:" + error.getMessage());
+          }
+        });
+  }
+
+    public void test_post_form(View view){
+        ApiClient.getInstance().postForm()
+                .url("https://crm.xiaoshouyi.com/mobile/global/login.action")
+                .addGlobalHeaders(false)
+                .addParams("password","111111")
+                .addParams("passport","liuzq@9.cn")
+                .build()
+                .enqueue(new JsonCallBack() {
+                    @Override
+                    public void onResponse(Call call, Object response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Exception error) {
+
+                    }
+                });
+
+
+    }
+
 }

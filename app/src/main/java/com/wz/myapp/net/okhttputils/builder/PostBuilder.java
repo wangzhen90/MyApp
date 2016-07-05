@@ -1,5 +1,6 @@
 package com.wz.myapp.net.okhttputils.builder;
 
+import com.wz.myapp.net.okhttputils.request.PostRequest;
 import com.wz.myapp.net.okhttputils.request.RequestCall;
 import okhttp3.MediaType;
 
@@ -13,6 +14,6 @@ public class PostBuilder extends PostStringBuilder {
   }
 
   @Override public RequestCall build() {
-    return null;
+    return new PostRequest(url,tag,headers,params,cacheKey,isAddGloabalHeaders,isAddGloabalParams,content,mediaType,cacheType).build();
   }
 }

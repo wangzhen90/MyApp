@@ -7,6 +7,7 @@ import android.util.Log;
 import com.wz.myapp.AppApplication;
 import com.wz.myapp.net.okhttputils.builder.GetBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostBuilder;
+import com.wz.myapp.net.okhttputils.builder.PostFileBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostFormBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostStringBuilder;
 import com.wz.myapp.net.okhttputils.cache.ACache;
@@ -98,9 +99,9 @@ public class ApiClient {
         return new PostFormBuilder();
     }
 
-    public PostStringBuilder postString() {
-        return new PostStringBuilder();
-    }
+    public PostStringBuilder postString() {  return new PostStringBuilder(); }
+
+    public PostFileBuilder postFile(){return new PostFileBuilder();}
 
     public void excute(Request request, BaseCallback callback) {
 

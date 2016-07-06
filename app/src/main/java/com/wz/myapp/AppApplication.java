@@ -2,6 +2,7 @@ package com.wz.myapp;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.wz.myapp.net.okhttputils.ApiClient;
 
 import java.util.HashMap;
@@ -11,37 +12,39 @@ import java.util.HashMap;
  */
 public class AppApplication extends Application {
 
-    static AppApplication instance;
+  static AppApplication instance;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
+  @Override public void onCreate() {
+    super.onCreate();
+    instance = this;
 
-        HashMap<String, String> headers = new HashMap<>();
-        //headers.put("Cookie", "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"");
-        headers.put("Cookie", "x-ienterprise-passport=\"TmnV7MjKiQjFqN5oPVJoBN1tOoLd2/YX\";userId=\"101\"");
-        headers.put("charset", "UTF-8");
-        headers.put("Accept-Encoding", "gzip");
+    Stetho.initialize(Stetho.newInitializerBuilder(this)
+        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+        .build());
 
-        HashMap<String, String> params = new HashMap<>();
+    HashMap<String, String> headers = new HashMap<>();
+    headers.put("Cookie",
+        "x-ienterprise-passport=\"rFFKs4EFJ+tmDt/B6PIWE+jFP2SrL4Lw5VO7Sfa9BPA=\";userId=\"78734\"");
+    //        headers.put("Cookie", "x-ienterprise-passport=\"TmnV7MjKiQjFqN5oPVJoBN1tOoLd2/YX\";userId=\"101\"");
+    headers.put("charset", "UTF-8");
+    //        headers.put("Accept-Encoding", "gzip");//不要乱写，写上之后有的接口返回的无法解析
 
-        params.put("source", 1 + "");
-        params.put("os", 22 + "");
-        params.put("model", "motorola+victara");
-        params.put("cache_key", 78734 + "");
-        params.put("appType", "0");
-        params.put("_vs", "4.1.4");
+    HashMap<String, String> params = new HashMap<>();
 
-        ApiClient.getInstance()
-                .addGloableHeaders(headers)
-                .addGloableParams(params)
-        ;
+    params.put("source", 1 + "");
+    params.put("os", 22 + "");
+    params.put("model", "motorola+victara");
+    params.put("cache_key", 78734 + "");
+    params.put("appType", "0");
+    params.put("_vs", "4.1.4");
 
-    }
+    ApiClient.getInstance().addGloableHeaders(headers).addGloableParams(params)
 
-    public static Application getInstance() {
-        return instance;
-    }
+    ;
+  }
 
+  public static Application getInstance() {
+    return instance;
+  }
 }

@@ -11,7 +11,7 @@ public class ApiConfig {
 
 
     //public static final String HOSTS = "https://crm-dev6.xiaoshouyi.com/mobile";
-    public static final String HOSTS = "https://crm.xiaoshouyi.com/mobile";
+    public static final String HOSTS = "https://crm-dev11.xiaoshouyi.com/mobile";
     public static final String DOWNLOAD_HOSTS = "https://xsybucket.s3.cn-north-1.amazonaws.com.cn";
     public static  boolean isShowResponse;
     public static  boolean debug;

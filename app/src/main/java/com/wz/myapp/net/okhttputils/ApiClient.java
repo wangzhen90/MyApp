@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.wz.myapp.AppApplication;
 import com.wz.myapp.net.okhttputils.builder.GetBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostBuilder;
@@ -12,6 +13,7 @@ import com.wz.myapp.net.okhttputils.builder.PostFormBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostStringBuilder;
 import com.wz.myapp.net.okhttputils.cache.ACache;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
+import com.wz.myapp.net.okhttputils.https.HttpsUtils;
 import com.wz.myapp.net.okhttputils.intercepter.LoggerInterceptor;
 import com.wz.myapp.net.okhttputils.request.RequestCall;
 
@@ -65,9 +67,11 @@ public class ApiClient {
         mOkHttpClient =
                 new OkHttpClient.Builder().connectTimeout(ApiConfig.CONNECT_TIMEOUT, TimeUnit.SECONDS)
                         .writeTimeout(ApiConfig.WRITE_TIMEOUT, TimeUnit.SECONDS).readTimeout(
-                        ApiConfig.READ_TIMEOUT, TimeUnit.SECONDS)
+                    ApiConfig.READ_TIMEOUT, TimeUnit.SECONDS)
                         //                .addInterceptor(new ApiHeader())
                         .addInterceptor(new LoggerInterceptor(null, isShowResponse))
+                        .addNetworkInterceptor(new StethoInterceptor())
+                        .sslSocketFactory(HttpsUtils.getSslSocketFactory(null, null, null))
                         .build();
     }
 

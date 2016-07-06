@@ -1,11 +1,12 @@
 package com.wz.myapp.net.okhttputils.callback;
 
-import android.content.res.TypedArray;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
+import com.wz.myapp.AppApplication;
 import com.wz.myapp.net.okhttputils.helper.TypeAdapters;
+import com.wz.myapp.net.okhttputils.testmodle.JsonBase;
+import android.util.Log;
+import android.widget.Toast;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -36,9 +37,15 @@ public abstract class JsonCallBack<T extends Object> extends BaseCallback<T> {
         ResponseBody body = response.body();
         T t = null;
         if (body != null) {
-            t = gson.fromJson(body.string(), getType());//²»ÒªÐ´³ÉtoString()
-//            t = gson.fromJson(body.charStream(), clazz);
+//            String str = ""+new String(body.string().getBytes(),"utf-8") ;
+            t = gson.fromJson(body.string(), getType());//not toString()
+//            t = (T)gson.fromJson(body.string(), test.class);//not toString()
+//            t = (T) gson.fromJson(body.charStream(), JsonBase.class);
         }
         return t;
+    }
+
+    class test{
+        Integer scode;
     }
 }

@@ -11,6 +11,7 @@ import com.wz.myapp.net.okhttputils.builder.PostFormBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostStringBuilder;
 import com.wz.myapp.net.okhttputils.cache.ACache;
 import com.wz.myapp.net.okhttputils.callback.BaseCallback;
+import com.wz.myapp.net.okhttputils.https.HttpsUtils;
 import com.wz.myapp.net.okhttputils.intercepter.LoggerInterceptor;
 import com.wz.myapp.net.okhttputils.request.RequestCall;
 
@@ -67,6 +68,8 @@ public class ApiClient {
                         ApiConfig.READ_TIMEOUT, TimeUnit.SECONDS)
                         //                .addInterceptor(new ApiHeader())
                         .addInterceptor(new LoggerInterceptor(null, isShowResponse))
+                        .addNetworkInterceptor(new StethoInterceptor())
+                        .sslSocketFactory(HttpsUtils.getSslSocketFactory(null,null,null))
                         .build();
     }
 

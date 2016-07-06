@@ -19,6 +19,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="test_get_cache"
+        android:text="test_get_cache" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="test_api_get"
         android:text="test_api_get" />
 
@@ -28,16 +34,18 @@
         android:onClick="test_api_get_file"
         android:text="test_api_get_file" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="test_get_cache"
-        android:text="test_get_cache" />
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="test_post_form"
         android:text="test_post_form" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="test_post_multi_form"
+        android:text="test_post_multi_form" />
 
 </LinearLayout>

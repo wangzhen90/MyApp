@@ -39,6 +39,7 @@ public class LoggerInterceptor implements Interceptor {
         Request request = chain.request();
         logForRequest(request);
         Response response = chain.proceed(request);
+
         return logForResponse(response);
     }
 
@@ -48,6 +49,7 @@ public class LoggerInterceptor implements Interceptor {
             Log.e(tag, "========response'log=======");
             Response.Builder builder = response.newBuilder();
             Response clone = builder.build();
+
             Log.e(tag, "url : " + clone.request().url());
             Log.e(tag, "code : " + clone.code());
             Log.e(tag, "protocol : " + clone.protocol());
@@ -77,7 +79,7 @@ public class LoggerInterceptor implements Interceptor {
 
             Log.e(tag, "========response'log=======end");
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
 
         return response;
@@ -108,7 +110,7 @@ public class LoggerInterceptor implements Interceptor {
             }
             Log.e(tag, "========request'log=======end");
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

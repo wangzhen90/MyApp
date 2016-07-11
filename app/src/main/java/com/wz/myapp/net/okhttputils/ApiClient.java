@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.wz.myapp.AppApplication;
 import com.wz.myapp.net.okhttputils.builder.GetBuilder;
 import com.wz.myapp.net.okhttputils.builder.PostBuilder;
@@ -70,7 +71,7 @@ public class ApiClient {
                         //                .addInterceptor(new ApiHeader())
                         .addInterceptor(new LoggerInterceptor(null, isShowResponse))
                         .addNetworkInterceptor(new StethoInterceptor())
-                        .sslSocketFactory(HttpsUtils.getSslSocketFactory(null,null,null))
+                        .sslSocketFactory(HttpsUtils.getSslSocketFactory(null, null, null))
                         .build();
     }
 
@@ -102,14 +103,12 @@ public class ApiClient {
         return new PostFormBuilder();
     }
 
-    public PostStringBuilder postString() {  return new PostStringBuilder(); }
+    public PostStringBuilder postString() {
+        return new PostStringBuilder();
+    }
 
-    public PostFileBuilder postFile(){return new PostFileBuilder();}
-
-    public void excute(Request request, BaseCallback callback) {
-
-        //TODO
-
+    public PostFileBuilder postFile() {
+        return new PostFileBuilder();
     }
 
     public void enqueue(RequestCall requestCall, BaseCallback callback) {
@@ -118,6 +117,17 @@ public class ApiClient {
         }
         final BaseCallback finalCallback = callback;
         request(requestCall, finalCallback);
+    }
+
+    public Response execute(RequestCall requestCall) {
+        Response responseSync = null;
+        try {
+            Call callSync = requestCall.getCall();
+            responseSync = callSync.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  responseSync;
     }
 
     private void requestNet(final RequestCall requestCall, final BaseCallback finalCallback) {
@@ -144,7 +154,6 @@ public class ApiClient {
                     //TODO make a thread pool?  add a params to make async or sync?
                     if (obj != null && obj instanceof Serializable) {
                         saveCache((Serializable) obj, requestCall.getCacheTag());
-//                        ACache.get().put(requestCall.getCacheTag(),response.body().bytes());
                     }
 
                     senSuccResultCallback(call, obj, finalCallback, requestCall);

@@ -11,6 +11,7 @@ import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by dell on 2016/6/30.
@@ -62,6 +63,14 @@ public class RequestCall {
     call = clone.newCall(request);
     return call;
   }
+//
+//  public Call newBuilder(BaseCallback callback){
+//    request = generateRequest(callback);
+////    request.newBuilder(); 然后使用同步请求获取token，然后在进行重复请求
+//
+//
+//  }
+
 
   private Request generateRequest(BaseCallback callback) {
 
@@ -71,6 +80,11 @@ public class RequestCall {
   public void enqueue(BaseCallback callback) {
     buildCall(callback);
     ApiClient.getInstance().enqueue(this, callback);
+  }
+
+  public Response execute(){
+    buildCall(null);
+    return ApiClient.getInstance().execute(this);
   }
 
   public OkHttpClient getClient() {

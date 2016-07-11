@@ -31,6 +31,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="test_api_get_sync"
+        android:text="test_api_get_sync" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="test_api_get_file"
         android:text="test_api_get_file" />
 

@@ -8,17 +8,17 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.wz.myapp.db.TestDao;
 import com.wz.myapp.net.okhttputils.ApiClient;
-import com.wz.myapp.net.okhttputils.ApiConfig;
 import com.wz.myapp.net.okhttputils.cache.ACache;
 import com.wz.myapp.net.okhttputils.callback.FileCallback;
 import com.wz.myapp.net.okhttputils.callback.JsonCallBack;
 import com.wz.myapp.net.okhttputils.helper.ResFileHelper;
 import com.wz.myapp.net.okhttputils.response.ProgressResponseBody;
 import com.wz.myapp.net.okhttputils.testmodle.CacheResult;
-import com.wz.myapp.net.okhttputils.testmodle.JsonBacklogs;
 import com.wz.myapp.net.okhttputils.testmodle.JsonBase;
 import com.wz.myapp.net.okhttputils.testmodle.JsonWork;
 import com.wz.myapp.net.okhttputils.testmodle.LoginModle;
@@ -50,6 +50,9 @@ public class OKHttpActivity extends AppCompatActivity {
         //        testPostString();
         //        testGetFile();
         //        testApiGet();
+
+        TestDao.insert("lao wang, wang yi de wang");
+        Toast.makeText(this, "toast", Toast.LENGTH_SHORT).show();
     }
 
     void testHeader() {
@@ -105,6 +108,27 @@ public class OKHttpActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+   public void test_api_get_sync(View view){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response response = ApiClient.getInstance()
+                            .get()
+                            .url("https://github.com/hongyangAndroid")
+                            .build()
+                            .execute();
+
+                    Log.e("okTest", response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     void testGetAsync() {

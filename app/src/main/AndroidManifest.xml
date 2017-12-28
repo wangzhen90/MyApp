@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".matrix.MatrixActivity" />
-        <activity android:name=".matrix.PictureZoomActivity"></activity>
+        <activity android:name=".matrix.PictureZoomActivity" />
+        <activity android:name=".matrix.MatrixApiDemoActivity" />
+        <activity android:name=".canvas.CanvasMainActivity" />
+        <activity android:name=".canvas.CanvasActivity" />
+        <activity android:name=".canvas.PathActivity"></activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.wangzhen.myapp.canvas.CanvasMainActivity;
 import com.example.wangzhen.myapp.matrix.MatrixActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,4 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void canvas(View view) {
+        Intent intent = new Intent(this, CanvasMainActivity.class);
+
+        this.startActivity(intent);
+    }
 }
